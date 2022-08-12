@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:24:17 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/12 15:06:55 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/12 17:08:41 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static size_t	ft_strlen(const char *s)
 int ft_error(char *msg)
 {
 	write(2, msg, ft_strlen(msg));
-	exit(EXIT_FAILURE);
+	return (0);
 }
 
 long long	ft_atoui(const char *s)
