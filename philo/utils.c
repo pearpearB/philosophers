@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:24:17 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/11 16:43:11 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/12 15:06:55 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,28 +28,25 @@ int ft_error(char *msg)
 	exit(EXIT_FAILURE);
 }
 
-long long	ft_atoi(const char *s)
+long long	ft_atoui(const char *s)
 {
 	long long	result;
-	int			sign;
 
-	sign = 1;
 	result = 0;
 	while (((*s >= 9 && *s <= 13) || *s == ' ') && *s)
 		s++;
 	if (*s == '+' || *s == '-')
 	{
 		if (*s == '-')
-			sign *= -1;
+			ft_error("[Error] Out of Unsigned Integer Range\n");
 		s++;
 	}
 	while ((*s >= '0' && *s <= '9') && *s)
 	{
-		if ((sign > 0 && result > INT_MAX / 10) || \
-			(sign < 0 && result > INT_MAX + 1 / 10))
-			ft_error("[Error] Out of Integer Range\n");
+		if (sign > 0 && result > UINT_MAX / 10)
+			ft_error("[Error] Out of Unsigned Integer Range\n");
 		result = result * 10 + (*s - '0');
 		s++;
 	}
-	return (sign * result);
+	return (result);
 }

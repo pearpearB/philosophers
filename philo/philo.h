@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:13:31 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/11 16:31:56 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/12 15:04:57 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <pthread.h>
 # include <sys/time.h>
 
-# define INT_MAX 2147483647
+# define UINT_MAX 4294967295
 
 typedef struct s_info
 {
@@ -28,6 +28,9 @@ typedef struct s_info
 	unsigned int	time_eat;
 	unsigned int	time_sleep;
 	int	num_must_eat;
+	int	num_die;
+	unsigned int	start_time;
+	pthread_mutex_t	*fork;
 }	t_info;
 
 typedef struct s_philo
@@ -39,6 +42,6 @@ typedef struct s_philo
 
 /* utils */
 int ft_error(char *msg);
-long long	ft_atoi(const char *s);
+long long	ft_atoui(const char *s);
 
 #endif
