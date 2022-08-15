@@ -6,11 +6,16 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:24:17 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/12 17:08:41 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/15 16:27:22 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+// void	free_thread(t_info *info, t_philo *philo)
+// {
+	
+// }
 
 static size_t	ft_strlen(const char *s)
 {
@@ -25,7 +30,7 @@ static size_t	ft_strlen(const char *s)
 int ft_error(char *msg)
 {
 	write(2, msg, ft_strlen(msg));
-	return (0);
+	return (-1);
 }
 
 long long	ft_atoui(const char *s)
@@ -38,13 +43,13 @@ long long	ft_atoui(const char *s)
 	if (*s == '+' || *s == '-')
 	{
 		if (*s == '-')
-			ft_error("[Error] Out of Unsigned Integer Range\n");
+			return(ft_error("[Error] Out of Unsigned Integer Range\n"));
 		s++;
 	}
 	while ((*s >= '0' && *s <= '9') && *s)
 	{
 		if (sign > 0 && result > UINT_MAX / 10)
-			ft_error("[Error] Out of Unsigned Integer Range\n");
+			return(ft_error("[Error] Out of Unsigned Integer Range\n"));
 		result = result * 10 + (*s - '0');
 		s++;
 	}

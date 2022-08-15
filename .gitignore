@@ -1,6 +1,7 @@
 .history
 .vscode
 .DS_Store
+test.c
 a.out
 philo.h.gch
 README.md

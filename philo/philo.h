@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:13:31 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/12 16:59:45 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/15 17:03:11 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ typedef struct s_info
 	unsigned int	time_eat;
 	unsigned int	time_sleep;
 	int	num_must_eat;
-	int	death; // ?
-	int	finish_eat; // ?
-	long long	start_time;
+	int	isdied; // ?
+	// int	finish_eat; // ?
+	long long	time_start;
 	pthread_mutex_t	*fork;
-	pthread_mutex_t	check_eat_cnt; // ?
-	pthread_mutex_t check_last_food; // ?
-	pthread_mutex_t	check_death; // ?
+	// pthread_mutex_t	check_eat_cnt; // ?
+	// pthread_mutex_t check_last_food; // ?
+	// pthread_mutex_t	check_death; // ?
 	pthread_mutex_t	print; // ?
 }	t_info;
 
@@ -44,14 +44,20 @@ typedef struct s_philo
 	unsigned int	fork_right;
 	unsigned int	fork_leht;
 	unsigned int	eat_cnt;
-	long long	last_food_time; // ?
+	long long	time_last_eat; // ?
 	t_info	*info;
 	pthread_t	th;
 }	t_philo;
 
+/* init */
+int		init_info(t_info *info);
+void	init_philo(t_info *info, t_philo **philo);
+
+/* run */
+void	run_philo(t_info *info, t_philo *philo);
 
 /* utils */
-int ft_error(char *msg);
+int 	ft_error(char *msg);
 long long	ft_atoui(const char *s);
 
 #endif
