@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:24:17 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/15 16:27:22 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/16 16:13:35 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,15 @@
 // {
 	
 // }
+
+long long	get_time(void)
+{
+	struct timeval	tp;
+
+	if (gettimeofday(&tp, NULL) < 0)
+		return(ft_error("[Error] Can't get time\n"));
+	return (tp.tv_sec * 1000 + tp.tv_usec / 1000);
+}
 
 static size_t	ft_strlen(const char *s)
 {

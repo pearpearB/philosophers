@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:13:31 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/15 17:03:11 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/16 16:13:33 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	run_philo(t_info *info, t_philo *philo);
 
 /* utils */
 int 	ft_error(char *msg);
+long long get_time(void);
 long long	ft_atoui(const char *s);
 
 #endif

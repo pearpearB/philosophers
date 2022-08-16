@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:13:03 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/15 15:15:42 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/16 16:03:22 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,6 @@ static int get_info(char **argv, t_info *info)
 	else if (!argv[5])
 		info->num_must_eat = -1;
 	return (1);
-}
-
-static int	get_time()
-{
-	struct timeval	tp;
-
-	if (gettimeofday(&tp, NULL) < 0)
-		return(ft_error("[Error] Can't get time\n"));
-	return (tp.tv_sec * 1000 + tp.tv_usec / 1000);
 }
 
 int main(int argc, char *argv[])
