@@ -6,18 +6,24 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:24:17 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/16 16:13:35 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/19 16:50:02 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-// void	free_thread(t_info *info, t_philo *philo)
-// {
-	
-// }
+void	free_thread(t_info *info, t_philo *philo)
+{
+	int i;
 
-long long	get_time(void)
+	i = -1;
+	while (++i < info->num_philo)
+		pthread_mutex_destroy(&philo->info->fork[i]);
+	free(info->fork);
+	free(philo);
+}
+
+unsigned int	get_time(void)
 {
 	struct timeval	tp;
 
@@ -57,7 +63,7 @@ long long	ft_atoui(const char *s)
 	}
 	while ((*s >= '0' && *s <= '9') && *s)
 	{
-		if (sign > 0 && result > UINT_MAX / 10)
+		if (result > UINT_MAX / 10)
 			return(ft_error("[Error] Out of Unsigned Integer Range\n"));
 		result = result * 10 + (*s - '0');
 		s++;

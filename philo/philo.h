@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:13:31 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/17 16:09:16 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/19 16:50:44 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@
 
 # define UINT_MAX 4294967295
 
-# define FORK 1
-# define EAT 2
-# define SLEEP 3
-# define SLEEP 4
-# define DIE 5
+// # define FORK 1
+// # define EAT 2
+// # define SLEEP 3
+// # define SLEEP 4
+// # define DIE 5
 
 typedef struct s_info
 {
@@ -36,7 +36,7 @@ typedef struct s_info
 	int	num_must_eat;
 	int	isdied; // ?
 	// int	finish_eat; // ?
-	long long	time_start;
+	unsigned int	time_start;
 	pthread_mutex_t	*fork;
 	// pthread_mutex_t	check_eat_cnt; // ?
 	// pthread_mutex_t check_last_food; // ?
@@ -48,23 +48,24 @@ typedef struct s_philo
 {
 	unsigned int	id;
 	unsigned int	fork_right;
-	unsigned int	fork_leht;
+	unsigned int	fork_left;
 	unsigned int	eat_cnt;
-	long long	time_last_eat; // ?
+	unsigned int	time_last_eat; // ?
 	t_info	*info;
 	pthread_t	th;
 }	t_philo;
 
 /* init */
-int		init_info(t_info *info);
-void	init_philo(t_info *info, t_philo **philo);
+int	init_info(t_info *info);
+int	init_philo(t_info *info, t_philo **philo);
 
 /* run */
 void	run_philo(t_info *info, t_philo *philo);
 
 /* utils */
 int 	ft_error(char *msg);
-long long get_time(void);
+void	free_thread(t_info *info, t_philo *philo);
+unsigned int get_time(void);
 long long	ft_atoui(const char *s);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 14:00:31 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/15 17:03:11 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/19 15:24:41 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	init_info(t_info *info)
 	return (1);
 }
 
-void init_philo(t_info *info, t_philo **philo)
+int init_philo(t_info *info, t_philo **philo)
 {
 	int	i;
 
@@ -58,4 +58,5 @@ void init_philo(t_info *info, t_philo **philo)
 		(*philo)[i].time_last_eat = get_time();
 		(*philo)[i].info = info;
 	}
+	return (1);
 }
