@@ -6,11 +6,30 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 14:11:53 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/16 18:54:36 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/17 16:16:39 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+static void	print_acting(t_philo *philo, int status)
+{
+	long long	time;
+	int		id;
+
+	time = get_time() - philo->info->time_start;
+	id = philo->id;
+	if (status == FORK)
+		printf("%u : philo[%d] has taken a fork\n", time, id);
+	else if (status == EAT)
+		printf("%u : philo[%d] is died\n", time, id);
+	else if (status == SLEEP)
+		printf("%u : philo[%d] is died\n", time, id);
+	else if (status == THINK)
+		printf("%u : philo[%d] is died\n", time, id);
+	else if (status == DIE)
+		printf("%u : philo[%d] is died\n", time, id);
+}
 
 static int check_death(t_philo *philo)
 {
@@ -18,11 +37,20 @@ static int check_death(t_philo *philo)
 		philo->info->isdied == 1)
 	{
 		philo->info->isdied = 1;
-		printf("%u : philo[%d] is died\n", \
-			get_time() - philo->info->time_start, philo->id);
+		print_acting(philo, DIE);
 		return (1);
 	}
 	return (0);
+}
+
+static int	check_eat(t_philo *philo)
+{
+	if (check_death(philo))
+		return (0);
+	pthread_mutex_lock(&philo->info->fork[philo->fork_right]);
+	pthread_mutex_lock(&philo->info->fork[philo->fork_left]);
+	print_acting(philo, FORK);
+
 }
 
 static void	*life_cycle(void *philo)
@@ -35,8 +63,17 @@ static void	*life_cycle(void *philo)
 	while (!check_death(philo))
 	{
 		if (philo->eat_cnt == philo->info->num_must_eat)
-			return (0);
-		// if () 여기부터!
+			break ;
+		if (!check_eat(philo))
+			break ;
+		if (get_time() - philo->info->time_start > 0 && philo->info->isdied == 0)
+			printf("%u : philo[%d] is sleeping\n", \
+				get_time() - philo->info->time_start, philo->id);
+		if (!check_death(philo))
+			break ;
+		if (get_time() - philo->info->time_start > 0 && philo->info->isdied == 0)
+			printf("%u : philo[%d] is thinking\n", \
+				get_time() - philo->info->time_start, philo->id);
 	}
 }
 

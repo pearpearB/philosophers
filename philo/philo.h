@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:13:31 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/16 16:13:33 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/17 16:09:16 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@
 # include <sys/time.h>
 
 # define UINT_MAX 4294967295
+
+# define FORK 1
+# define EAT 2
+# define SLEEP 3
+# define SLEEP 4
+# define DIE 5
 
 typedef struct s_info
 {

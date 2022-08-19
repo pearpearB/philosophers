@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:13:03 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/16 16:03:22 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/17 15:53:12 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,5 @@ int main(int argc, char *argv[])
 	init_philo(&info, &philo);
 	run_philo(&info, philo);
 	// free_thread(&info, philo);
-	
-	printf("%d\n", info.num_philo);
-	printf("%d\n", info.time_die);
-	printf("%d\n", info.time_eat);
-	printf("%d\n", info.time_sleep);
-	printf("%d\n", info.num_must_eat);
 	return (0);
 }
