@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 14:00:31 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/19 15:24:41 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/22 16:27:42 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,17 @@ int	init_info(t_info *info)
 	i = -1;
 	info->isdied = 0;
 	info->time_start = get_time();
-	// if ((pthread_mutex_init(&info->check_eat_cnt, NULL)) != 0)
+	// if ((pthread_mutex_init(&info->check_num_eat, NULL)) != 0)
 	// 	return (0);
 	// if ((pthread_mutex_init(&info->check_last_food, NULL)) != 0)
 	// 	return (0);
-	// if ((pthread_mutex_init(&info->check_death, NULL)) != 0)
-	// 	return (0);
+	if ((pthread_mutex_init(&info->check_death, NULL)) != 0)
+		return (0);
 	if ((pthread_mutex_init(&info->print, NULL)) != 0)
 		return (0);
 	info->fork = malloc(sizeof(pthread_mutex_t) * info->num_philo);
 	if (!info->fork)
-		return(ft_error("[Error] Insufficient Memory\n"));
+		return(printf("[Error] Insufficient Memory\n"));
 	while (++i < info->num_philo)
 	{
 		if ((pthread_mutex_init(&info->fork[i], NULL)) != 0)
@@ -44,7 +44,7 @@ int init_philo(t_info *info, t_philo **philo)
 
 	*philo = malloc(sizeof(t_philo) * info->num_philo);
 	if (!philo)
-		return(ft_error("[Error] Insufficient Memory\n"));
+		return(printf("[Error] Insufficient Memory\n"));
 	i = -1;
 	while (++i < info->num_philo)
 	{
@@ -54,7 +54,7 @@ int init_philo(t_info *info, t_philo **philo)
 		else
 			(*philo)[i].fork_right = i - 1;
 		(*philo)[i].fork_left = i;
-		(*philo)[i].eat_cnt = 0;
+		(*philo)[i].num_eat = 0;
 		(*philo)[i].time_last_eat = get_time();
 		(*philo)[i].info = info;
 	}

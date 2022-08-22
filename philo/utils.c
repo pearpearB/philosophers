@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:24:17 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/19 16:50:02 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/22 19:10:29 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@ void	free_thread(t_info *info, t_philo *philo)
 
 	i = -1;
 	while (++i < info->num_philo)
-		pthread_mutex_destroy(&philo->info->fork[i]);
+		pthread_mutex_destroy(&(info->fork[i]));
+	pthread_mutex_destroy(&(info->print));
+	pthread_mutex_destroy(&(info->check_death));
 	free(info->fork);
 	free(philo);
 }
@@ -28,45 +30,40 @@ unsigned int	get_time(void)
 	struct timeval	tp;
 
 	if (gettimeofday(&tp, NULL) < 0)
-		return(ft_error("[Error] Can't get time\n"));
-	return (tp.tv_sec * 1000 + tp.tv_usec / 1000);
+		return(printf("[Error] Can't get time\n"));
+	return ((tp.tv_sec * 1000) + (tp.tv_usec / 1000));
 }
 
-static size_t	ft_strlen(const char *s)
+static int	ft_isdigit(const char s)
 {
-	size_t	len;
-
-	len = 0;
-	while (s[len] != '\0')
-		len++;
-	return (len);
+	if (!('0' <= s && s <= '9'))
+		return(printf("[Error] Not Number Type\n"));
+	return (1);
 }
 
-int ft_error(char *msg)
-{
-	write(2, msg, ft_strlen(msg));
-	return (-1);
-}
-
-long long	ft_atoui(const char *s)
+int	ft_atoi(const char *s)
 {
 	long long	result;
+	int		sign;
 
 	result = 0;
+	sign = 1;
 	while (((*s >= 9 && *s <= 13) || *s == ' ') && *s)
 		s++;
-	if (*s == '+' || *s == '-')
+	if ((*s == '+' || *s == '-') && *s)
 	{
 		if (*s == '-')
-			return(ft_error("[Error] Out of Unsigned Integer Range\n"));
+			sign *= -1;
 		s++;
 	}
-	while ((*s >= '0' && *s <= '9') && *s)
+	while (*s && ft_isdigit(*s))
 	{
-		if (result > UINT_MAX / 10)
-			return(ft_error("[Error] Out of Unsigned Integer Range\n"));
 		result = result * 10 + (*s - '0');
+		if (sign > 0 && result * sign > INT_MAX)
+			return(printf("[Error] Out of Integer Range\n"));
+		else if (sign < 0 && result * sign < INT_MIN)
+			return(printf("[Error] Out of Integer Range\n"));
 		s++;
 	}
-	return (result);
+	return (result * sign);
 }
