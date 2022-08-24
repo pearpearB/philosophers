@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:13:31 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/22 18:57:03 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/24 14:55:07 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,10 @@ typedef struct s_info
 	int	time_sleep;
 	int	num_must_eat;
 	unsigned int	time_start;
-	int	isdied; // ?
-	// int	isfinished_eat; // ?
+	int	isdied;
 	pthread_mutex_t	*fork;
-	// pthread_mutex_t	check_num_eat; // ?
-	// pthread_mutex_t check_last_food; // ?
-	pthread_mutex_t	check_death; // ?
-	pthread_mutex_t	print; // ?
+	pthread_mutex_t	check_death;
+	pthread_mutex_t	print;
 }	t_info;
 
 typedef struct s_philo
@@ -65,6 +62,7 @@ void	run_philo(t_info *info, t_philo *philo);
 
 /* utils */
 void	free_thread(t_info *info, t_philo *philo);
+void	wait_time(unsigned int time);
 unsigned int get_time(void);
 int	ft_atoi(const char *s);
 

@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:24:17 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/22 19:10:29 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/24 15:22:47 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,21 @@ void	free_thread(t_info *info, t_philo *philo)
 	free(philo);
 }
 
+void	wait_time(unsigned int time)
+{
+	unsigned int	start_time;
+	unsigned int	now_time;
+
+	start_time = get_time();
+	while(1)
+	{
+		now_time = get_time();
+		if (now_time - start_time >= time)
+			break ;
+		usleep(100);
+	}
+}
+
 unsigned int	get_time(void)
 {
 	struct timeval	tp;
@@ -36,9 +51,7 @@ unsigned int	get_time(void)
 
 static int	ft_isdigit(const char s)
 {
-	if (!('0' <= s && s <= '9'))
-		return(printf("[Error] Not Number Type\n"));
-	return (1);
+	return ('0' <= s && s <= '9');
 }
 
 int	ft_atoi(const char *s)
@@ -56,13 +69,14 @@ int	ft_atoi(const char *s)
 			sign *= -1;
 		s++;
 	}
-	while (*s && ft_isdigit(*s))
+	while (*s)
 	{
+		if (ft_isdigit(*s))
+			return(-1);
 		result = result * 10 + (*s - '0');
-		if (sign > 0 && result * sign > INT_MAX)
-			return(printf("[Error] Out of Integer Range\n"));
-		else if (sign < 0 && result * sign < INT_MIN)
-			return(printf("[Error] Out of Integer Range\n"));
+		if ((sign > 0 && result * sign > INT_MAX) || \
+			(sign < 0 && result * sign < INT_MIN))
+			return(-1);
 		s++;
 	}
 	return (result * sign);

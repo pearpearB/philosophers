@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 14:00:31 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/22 16:27:42 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/24 15:07:57 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,6 @@ int	init_info(t_info *info)
 	i = -1;
 	info->isdied = 0;
 	info->time_start = get_time();
-	// if ((pthread_mutex_init(&info->check_num_eat, NULL)) != 0)
-	// 	return (0);
-	// if ((pthread_mutex_init(&info->check_last_food, NULL)) != 0)
-	// 	return (0);
 	if ((pthread_mutex_init(&info->check_death, NULL)) != 0)
 		return (0);
 	if ((pthread_mutex_init(&info->print, NULL)) != 0)
