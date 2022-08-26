@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:13:03 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/24 15:17:43 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/25 17:39:51 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,12 @@ int main(int argc, char *argv[])
 		return(printf("[Error] Can't init info for Mutex\n"));
 	init_philo(&info, &philo);
 	run_philo(&info, philo);
+
+	// monitoring(&info, philo);
+	// int i = -1;
+	// while (++i < info.num_philo)
+	// 	pthread_join(philo[i].thread, NULL);
+
 	free_thread(&info, philo);
 	return (0);
 }

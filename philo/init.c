@@ -6,11 +6,20 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 14:00:31 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/24 15:07:57 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/26 11:20:23 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+unsigned int	init_time(void)
+{
+	struct timeval	tp;
+
+	if (gettimeofday(&tp, NULL) < 0)
+		return(printf("[Error] Can't get time\n"));
+	return ((tp.tv_sec * 1000) + (tp.tv_usec / 1000));
+}
 
 int	init_info(t_info *info)
 {
@@ -18,8 +27,10 @@ int	init_info(t_info *info)
 	
 	i = -1;
 	info->isdied = 0;
-	info->time_start = get_time();
+	info->time_start = init_time();
 	if ((pthread_mutex_init(&info->check_death, NULL)) != 0)
+		return (0);
+	if ((pthread_mutex_init(&info->check_num_eat, NULL)) != 0) //
 		return (0);
 	if ((pthread_mutex_init(&info->print, NULL)) != 0)
 		return (0);
@@ -51,7 +62,7 @@ int init_philo(t_info *info, t_philo **philo)
 			(*philo)[i].fork_right = i - 1;
 		(*philo)[i].fork_left = i;
 		(*philo)[i].num_eat = 0;
-		(*philo)[i].time_last_eat = get_time();
+		(*philo)[i].time_last_eat = init_time();
 		(*philo)[i].info = info;
 	}
 	return (1);
