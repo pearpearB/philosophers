@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 14:00:31 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/26 13:49:58 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/26 15:45:14 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,8 @@ int	init_info(t_info *info)
 	
 	i = -1;
 	info->isdied = 0;
-	// info->time_start = init_time();
 	if ((pthread_mutex_init(&info->check_death, NULL)) != 0)
 		return (0);
-	// if ((pthread_mutex_init(&info->check_num_eat, NULL)) != 0) //
-	// 	return (0);
 	if ((pthread_mutex_init(&info->print, NULL)) != 0)
 		return (0);
 	info->fork = malloc(sizeof(pthread_mutex_t) * info->num_philo);
@@ -62,7 +59,6 @@ int init_philo(t_info *info, t_philo **philo)
 			(*philo)[i].fork_right = i - 1;
 		(*philo)[i].fork_left = i;
 		(*philo)[i].num_eat = 0;
-		// (*philo)[i].time_last_eat = init_time();
 		(*philo)[i].info = info;
 	}
 	return (0);
