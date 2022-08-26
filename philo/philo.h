@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:13:31 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/25 18:17:59 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/26 13:49:38 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef struct s_info
 	pthread_t	monitor;
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	check_death;
-	pthread_mutex_t	check_num_eat; //
+	// pthread_mutex_t	check_num_eat; //
 	pthread_mutex_t	print;
 }	t_info;
 

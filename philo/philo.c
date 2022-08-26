@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:13:03 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/25 17:39:51 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/26 13:31:25 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,16 @@ static int get_info(char **argv, t_info *info)
 	info->time_sleep = ft_atoi(argv[4]);
 	if (info->num_philo < 1 || info->time_die < 1 || \
 		info->time_eat < 1 || info->time_sleep < 1)
-		return (0);
+		return (1);
 	if (argv[5])
 	{
 		info->num_must_eat = ft_atoi(argv[5]);
 		if (info->num_must_eat < 1)
-			return (0);
+			return (1);
 	}
 	else
 		info->num_must_eat = -1;
-	return (1);
+	return (0);
 }
 
 int main(int argc, char *argv[])
@@ -37,18 +37,16 @@ int main(int argc, char *argv[])
 	t_info	info;
 	t_philo	*philo;
 
-	if (!(argc == 5 || argc == 6) || !get_info(argv, &info))
-		return(printf("[Error] Invalid Arguments\n"));
-	if (!init_info(&info))
-		return(printf("[Error] Can't init info for Mutex\n"));
-	init_philo(&info, &philo);
+	if (!(argc == 5 || argc == 6) || get_info(argv, &info))
+	{
+		printf("[Error] Invalid Arguments\n");
+		return (-1);
+	}
+	if(init_info(&info))
+		return (-1);
+	if(init_philo(&info, &philo))
+		return (-1);
 	run_philo(&info, philo);
-
-	// monitoring(&info, philo);
-	// int i = -1;
-	// while (++i < info.num_philo)
-	// 	pthread_join(philo[i].thread, NULL);
-
 	free_thread(&info, philo);
 	return (0);
 }

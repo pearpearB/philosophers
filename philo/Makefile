@@ -6,7 +6,7 @@
 #    By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/24 15:25:57 by jabae             #+#    #+#              #
-#    Updated: 2022/08/26 11:07:02 by jabae            ###   ########.fr        #
+#    Updated: 2022/08/26 15:39:37 by jabae            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,21 +19,24 @@ SRCS =	philo.c \
 
 OBJS = $(SRCS:%.c=%.o)
 
-FLAGS	= -Wall -Wextra -Werror -fsanitize=thread -g3
+FLAGS	= -Wall -Wextra -Werror #-fsanitize=thread -g3
 
 all	: $(NAME)
 
 $(NAME)	:	$(OBJS)
-		cc $(FLAGS)  -o $(NAME) $(OBJS)
+		@cc $(FLAGS)  -o $(NAME) $(OBJS)
+		@echo "🍽 MAKE SUCCESS"
 
 %.o	:	%.c
-	cc $(FLAGS) -c $^ -I./
+	@cc $(FLAGS) -c $^ -I./
 
 clean	: 
-		rm -f $(OBJS)
+		@rm -f $(OBJS)
+		@echo "🍽 CLEAN SUCCESS"
 
 fclean	: 	clean
-		rm -f $(NAME)
+		@rm -f $(NAME)
+		@echo "🍽 FCLEAN SUCCESS"
 
 re : fclean all
 
