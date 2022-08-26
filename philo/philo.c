@@ -6,13 +6,13 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:13:03 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/26 15:46:44 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/26 17:02:36 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static int get_info(char **argv, t_info *info)
+static int	get_info(char **argv, t_info *info)
 {
 	info->num_philo = ft_atoi(argv[1]);
 	info->time_die = ft_atoi(argv[2]);
@@ -32,7 +32,7 @@ static int get_info(char **argv, t_info *info)
 	return (0);
 }
 
-int main(int argc, char *argv[])
+int	main(int argc, char *argv[])
 {
 	t_info	info;
 	t_philo	*philo;
@@ -42,9 +42,9 @@ int main(int argc, char *argv[])
 		printf("[Error] Invalid Arguments\n");
 		return (-1);
 	}
-	if(init_info(&info))
+	if (init_info(&info))
 		return (-1);
-	if(init_philo(&info, &philo))
+	if (init_philo(&info, &philo))
 		return (-1);
 	run_philo(&info, philo);
 	free_thread(&info, philo);

@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:24:17 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/26 16:10:25 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/26 17:18:54 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	free_thread(t_info *info, t_philo *philo)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (++i < info->num_philo)
@@ -25,7 +25,7 @@ void	free_thread(t_info *info, t_philo *philo)
 	free(philo);
 }
 
-void	print_status(t_info *info, unsigned int time_act, int id, int status)
+void	print_philo(t_info *info, long long time, int id, int status)
 {
 	int	dead;
 
@@ -36,16 +36,16 @@ void	print_status(t_info *info, unsigned int time_act, int id, int status)
 	if (!dead)
 	{
 		if (status == FORK)
-			printf("%u [%d] has taken a fork\n", time_act, id);
+			printf("%lld %d has taken a fork\n", time, id);
 		else if (status == EAT)
-			printf("%u [%d] is eating\n", time_act, id);
+			printf("%lld %d is eating\n", time, id);
 		else if (status == SLEEP)
-			printf("%u [%d] is sleeping\n", time_act, id);
+			printf("%lld %d is sleeping\n", time, id);
 		else if (status == THINK)
-			printf("%u [%d] is thinking\n", time_act, id);
+			printf("%lld %d is thinking\n", time, id);
 		else if (status == DIE)
 		{
-			printf("%u [%d] died\n", time_act, id);
+			printf("%lld %d died\n", time, id);
 			pthread_mutex_lock(&(info->check_death));
 			info->isdied = 1;
 			pthread_mutex_unlock(&(info->check_death));
@@ -54,12 +54,12 @@ void	print_status(t_info *info, unsigned int time_act, int id, int status)
 	pthread_mutex_unlock(&(info->print));
 }
 
-void	wait_time(unsigned int time)
+void	wait_time(long long time)
 {
-	unsigned int	start_time;
+	long long	start_time;
 
 	start_time = init_time();
-	while(init_time() - start_time < time)
+	while (init_time() - start_time < time)
 		usleep(200);
 }
 
@@ -71,7 +71,7 @@ static int	ft_isdigit(const char s)
 int	ft_atoi(const char *s)
 {
 	long long	result;
-	int		sign;
+	int			sign;
 
 	result = 0;
 	sign = 1;
@@ -86,11 +86,11 @@ int	ft_atoi(const char *s)
 	while (*s)
 	{
 		if (!ft_isdigit(*s))
-			return(-1);
+			return (-1);
 		result = result * 10 + (*s - '0');
 		if ((sign > 0 && result * sign > INT_MAX) || \
 			(sign < 0 && result * sign < INT_MIN))
-			return(-1);
+			return (-1);
 		s++;
 	}
 	return (result * sign);

@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:13:31 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/26 13:49:38 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/26 18:00:37 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,44 +30,42 @@
 
 typedef struct s_info
 {
-	int	num_philo;
-	int	time_die;
-	int	time_eat;
-	int	time_sleep;
-	int	num_must_eat;
-	int	isdied; // !!!!!
-	unsigned int	time_start;
-	pthread_t	monitor;
+	int				num_philo;
+	int				time_die;
+	int				time_eat;
+	int				time_sleep;
+	int				num_must_eat;
+	int				isdied;
+	long long		time_start;
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	check_death;
-	// pthread_mutex_t	check_num_eat; //
+	pthread_mutex_t check_full;
 	pthread_mutex_t	print;
 }	t_info;
 
 typedef struct s_philo
 {
-	int	id;
-	int	fork_right;
-	int	fork_left;
-	int	num_eat;
-	unsigned int	time_last_eat;
-	pthread_t	thread;
-	t_info	*info;
+	int				id;
+	int				fork_right;
+	int				fork_left;
+	int				num_eat;
+	long long		time_last_eat;
+	pthread_t		thread;
+	t_info			*info;
 }	t_philo;
 
 /* init */
-int	init_info(t_info *info);
-int	init_philo(t_info *info, t_philo **philo);
-unsigned int init_time(void);
+int				init_info(t_info *info);
+int				init_philo(t_info *info, t_philo **philo);
+long long		init_time(void);
 
 /* run */
-int check_death(t_philo *philo);
-void	run_philo(t_info *info, t_philo *philo);
-void	print_status(t_info *info, unsigned int time_act, int id, int status);
+void			run_philo(t_info *info, t_philo *philo);
 
 /* utils */
-void	free_thread(t_info *info, t_philo *philo);
-void	wait_time(unsigned int time);
-int	ft_atoi(const char *s);
+void			free_thread(t_info *info, t_philo *philo);
+void			print_philo(t_info *info, long long time, int id, int status);
+void			wait_time(long long time);
+int				ft_atoi(const char *s);
 
 #endif
