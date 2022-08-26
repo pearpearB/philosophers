@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 14:00:31 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/26 17:55:13 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/26 18:02:33 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,13 @@ int	init_info(t_info *info)
 	int	i;
 
 	info->isdied = 0;
+	info->num_full_philo = 0;
 	info->fork = malloc(sizeof(pthread_mutex_t) * info->num_philo);
 	if (!info->fork)
 		return (printf("[Error] Insufficient Memory\n"));
 	if ((pthread_mutex_init(&info->check_death, NULL)) != 0)
+		return (-1);
+	if ((pthread_mutex_init(&info->check_full, NULL)) != 0)
 		return (-1);
 	if ((pthread_mutex_init(&info->print, NULL)) != 0)
 		return (-1);

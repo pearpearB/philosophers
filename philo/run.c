@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 14:11:53 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/26 18:00:50 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/26 18:15:47 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,14 @@ static int	eat_philo(t_info *info, t_philo *philo)
 		return (1);
 	}
 	print_philo(info, init_time() - info->time_start, philo->id, EAT);
-	// printf("eat_count: %d\n", philo->num_eat + 1);
 	philo->time_last_eat = init_time();
 	philo->num_eat += 1;
+	if (philo->num_eat == info->num_must_eat)
+	{
+		pthread_mutex_lock(&(info->check_full));
+		info->num_full_philo += 1;
+		pthread_mutex_unlock(&(info->check_full));
+	}
 	wait_time(info->time_eat);
 	pthread_mutex_unlock(&philo->info->fork[philo->fork_right]);
 	pthread_mutex_unlock(&philo->info->fork[philo->fork_left]);
@@ -75,7 +80,7 @@ static void	*act_philo(void *ph)
 			break ;
 		if (eat_philo(info, philo))
 			break ;
-		if (check_death(philo) || philo->num_eat == info->num_must_eat)
+		if (check_death(philo))
 			break ;
 		print_philo(info, init_time() - info->time_start, philo->id, SLEEP);
 		wait_time(info->time_sleep);
@@ -84,6 +89,26 @@ static void	*act_philo(void *ph)
 		print_philo(info, init_time() - info->time_start, philo->id, THINK);
 	}
 	return (0);
+}
+
+static void	morintoring(t_info *info, t_philo **philo)
+{
+	int	full_philos;
+	int	i;
+
+	i = -1;
+	while (1)
+	{
+		if (++i >= info->num_philo)
+			i = 0;
+		pthread_mutex_lock(&(info->check_full));
+		full_philos = info->num_full_philo;
+		pthread_mutex_unlock(&(info->check_full));
+		if (full_philos == info->num_philo)
+			break ;
+		if (check_death(&(*philo)[i]))
+			break ;
+	}
 }
 
 void	run_philo(t_info *info, t_philo *philo)
@@ -98,6 +123,7 @@ void	run_philo(t_info *info, t_philo *philo)
 		if (pthread_create(&philo[i].thread, NULL, act_philo, &philo[i]) != 0)
 			return ;
 	}
+	morintoring(info, &philo);
 	i = -1;
 	while (++i < info->num_philo)
 		pthread_join(philo[i].thread, NULL);

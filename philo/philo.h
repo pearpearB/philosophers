@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:13:31 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/26 18:00:37 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/26 18:02:16 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_info
 	int				time_sleep;
 	int				num_must_eat;
 	int				isdied;
+	int				num_full_philo;
 	long long		time_start;
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	check_death;

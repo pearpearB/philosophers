@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:13:03 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/26 17:02:36 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/26 18:10:10 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,3 @@ int	main(int argc, char *argv[])
 	free_thread(&info, philo);
 	return (0);
 }
-
-// gcc -fsanitize=thread -g init.c  philo.c philo.h run.c utils.c
