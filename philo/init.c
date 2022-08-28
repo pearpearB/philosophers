@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 14:00:31 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/28 19:11:22 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/28 21:08:51 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	init_info(t_info *info)
 {
 	int	i;
 
-	info->isdied = 0;
+	info->die_flag = 0;
 	info->num_full_philo = 0;
 	info->fork = malloc(sizeof(pthread_mutex_t) * info->num_philo);
 	if (!info->fork)

@@ -6,30 +6,30 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 14:11:53 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/28 20:20:10 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/28 23:16:04 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static int	check_death(t_philo *philo)
+int	check_death(t_philo *philo)
 {
 	t_info	*info;
-	int		dead;
+	int		isdied;
 
 	info = philo->info;
-	dead = 0;
+	isdied = 0;
 	pthread_mutex_lock(&(info->check_death));
-		dead = info->isdied;
+		isdied = info->die_flag;
 	pthread_mutex_unlock(&(info->check_death));
-	pthread_mutex_lock(&(info->check_last_eat));
-	if ((long long)info->time_die < init_time() - philo->time_last_eat)
-	{
-		print_philo(info, init_time() - info->time_start, philo->id, DIE);
-		dead = 1;
-	}
-	pthread_mutex_unlock(&(info->check_last_eat));
-	return (dead);
+	// pthread_mutex_lock(&(info->check_last_eat));
+	// if ((long long)info->time_die < init_time() - philo->time_last_eat)
+	// {
+	// 	print_philo(info, init_time() - info->time_start, philo->id, DIE);
+	// 	isdied = 1;
+	// }
+	// pthread_mutex_unlock(&(info->check_last_eat));
+	return (isdied);
 }
 
 static int	eat_philo(t_info *info, t_philo *philo)
@@ -38,7 +38,7 @@ static int	eat_philo(t_info *info, t_philo *philo)
 	print_philo(info, init_time() - info->time_start, philo->id, FORK);
 	if (info->num_philo == 1)
 	{
-		wait_time(info->time_die);
+		wait_time(info->time_die, philo);
 		pthread_mutex_unlock(&philo->info->fork[philo->fork_left]);
 		print_philo(info, init_time() - info->time_start, philo->id, DIE);
 		return (1);
@@ -62,7 +62,7 @@ static int	eat_philo(t_info *info, t_philo *philo)
 		info->num_full_philo += 1;
 		pthread_mutex_unlock(&(info->check_full));
 	}
-	wait_time(info->time_eat);
+	wait_time(info->time_eat, philo);
 	pthread_mutex_unlock(&philo->info->fork[philo->fork_right]);
 	pthread_mutex_unlock(&philo->info->fork[philo->fork_left]);
 	return (0);
@@ -86,7 +86,7 @@ static void	*act_philo(void *ph)
 		if (check_death(philo))
 			break ;
 		print_philo(info, init_time() - info->time_start, philo->id, SLEEP);
-		wait_time(info->time_sleep);
+		wait_time(info->time_sleep, philo);
 		if (check_death(philo))
 			break ;
 		print_philo(info, init_time() - info->time_start, philo->id, THINK);
@@ -111,18 +111,29 @@ static void	*morintoring(void	*ph)
 		if (info->num_full_philo == info->num_philo)
 		{
 			pthread_mutex_lock(&(info->check_death));
-			info->isdied = 1;  // 바보 이렇게 해줘야 끝나지
+			info->die_flag = 1;
 			pthread_mutex_unlock(&(info->check_death));
 			break ;
 		}
 		pthread_mutex_unlock(&(info->check_full));
-		if (check_death(&philo[i]))
+		pthread_mutex_lock(&(info->check_last_eat));
+		if ((long long)info->time_die < init_time() - philo[i].time_last_eat)
 		{
-			pthread_mutex_lock(&(info->check_death));
-			info->isdied = 1;  // 바보 이렇게 해줘야 끝나지
-			pthread_mutex_unlock(&(info->check_death));
-			break ;
+			print_philo(info, init_time() - info->time_start, philo[i].id, DIE);
+			pthread_mutex_unlock(&(info->check_last_eat));
+			break;
 		}
+		pthread_mutex_unlock(&(info->check_last_eat));
+		/////////////////////////////////////////////////
+		// pthread_mutex_lock(&(info->check_last_eat));
+		// if (check_death(&philo[i])) // !!!잠자는 시간동안 죽고 종료 안되는 문제 해결해야 함
+		// {
+		// 	pthread_mutex_lock(&(info->check_death));
+		// 	info->die_flag = 1;
+		// 	pthread_mutex_unlock(&(info->check_death));
+		// 	break ;
+		// }
+		// pthread_mutex_unlock(&(info->check_last_eat));
 	}
 	return (0);
 }

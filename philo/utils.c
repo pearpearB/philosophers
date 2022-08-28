@@ -6,36 +6,21 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:24:17 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/28 19:54:50 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/28 23:16:24 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	free_thread(t_info *info, t_philo *philo)
-{
-	int	i;
-
-	i = -1;
-	while (++i < info->num_philo)
-		pthread_mutex_destroy(&(info->fork[i]));
-	pthread_mutex_destroy(&(info->print));
-	pthread_mutex_destroy(&(info->check_death));
-	pthread_mutex_destroy(&(info->check_full));
-	pthread_mutex_destroy(&(info->check_last_eat));
-	free(info->fork);
-	free(philo);
-}
-
 void	print_philo(t_info *info, long long time, int id, int status)
 {
-	int	dead;
+	int	isdied;
 
 	pthread_mutex_lock(&(info->print));
 	pthread_mutex_lock(&(info->check_death));
-		dead = info->isdied;
+		isdied = info->die_flag;
 	pthread_mutex_unlock(&(info->check_death));
-	if (!dead)
+	if (!isdied)
 	{
 		if (status == FORK)
 			printf("%lld %d has taken a fork\n", time, id);
@@ -49,19 +34,19 @@ void	print_philo(t_info *info, long long time, int id, int status)
 		{
 			printf("%lld %d died\n", time, id);
 			pthread_mutex_lock(&(info->check_death));
-			info->isdied = 1;
+			info->die_flag = 1;
 			pthread_mutex_unlock(&(info->check_death));
 		}
 	}
 	pthread_mutex_unlock(&(info->print));
 }
 
-void	wait_time(long long time)
+void	wait_time(long long time, t_philo *philo)
 {
 	long long	start_time;
 
 	start_time = init_time();
-	while (init_time() - start_time < time)
+	while ((init_time() - start_time < time) && !check_death(philo)) // 중간중간 죽었는지 체크추가하기
 		usleep(200);
 }
 

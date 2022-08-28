@@ -6,7 +6,7 @@
 #    By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/24 15:25:57 by jabae             #+#    #+#              #
-#    Updated: 2022/08/28 19:59:50 by jabae            ###   ########.fr        #
+#    Updated: 2022/08/28 21:58:51 by jabae            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ SRCS =	philo.c \
 
 OBJS = $(SRCS:%.c=%.o)
 
-FLAGS	= -Wall -Wextra -Werror -fsanitize=thread -g3
+FLAGS	= -Wall -Wextra -Werror #-fsanitize=thread -g3
 
 all	: $(NAME)
 
