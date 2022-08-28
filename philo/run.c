@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 14:11:53 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/26 18:15:47 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/28 20:20:10 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,18 @@ static int	check_death(t_philo *philo)
 	int		dead;
 
 	info = philo->info;
+	dead = 0;
 	pthread_mutex_lock(&(info->check_death));
 		dead = info->isdied;
 	pthread_mutex_unlock(&(info->check_death));
-	if (dead)
-		return (1);
-	else if ((long long)info->time_die < init_time() - philo->time_last_eat)
+	pthread_mutex_lock(&(info->check_last_eat));
+	if ((long long)info->time_die < init_time() - philo->time_last_eat)
 	{
 		print_philo(info, init_time() - info->time_start, philo->id, DIE);
-		return (1);
+		dead = 1;
 	}
-	return (0);
+	pthread_mutex_unlock(&(info->check_last_eat));
+	return (dead);
 }
 
 static int	eat_philo(t_info *info, t_philo *philo)
@@ -51,7 +52,9 @@ static int	eat_philo(t_info *info, t_philo *philo)
 		return (1);
 	}
 	print_philo(info, init_time() - info->time_start, philo->id, EAT);
+	pthread_mutex_lock(&(info->check_last_eat));
 	philo->time_last_eat = init_time();
+	pthread_mutex_unlock(&(info->check_last_eat));
 	philo->num_eat += 1;
 	if (philo->num_eat == info->num_must_eat)
 	{
@@ -91,24 +94,37 @@ static void	*act_philo(void *ph)
 	return (0);
 }
 
-static void	morintoring(t_info *info, t_philo **philo)
+static void	*morintoring(void	*ph)
 {
-	int	full_philos;
+	t_philo	*philo;
+	t_info	*info;
 	int	i;
 
+	philo = (t_philo *)ph;
+	info = philo->info;
 	i = -1;
 	while (1)
 	{
 		if (++i >= info->num_philo)
 			i = 0;
 		pthread_mutex_lock(&(info->check_full));
-		full_philos = info->num_full_philo;
+		if (info->num_full_philo == info->num_philo)
+		{
+			pthread_mutex_lock(&(info->check_death));
+			info->isdied = 1;  // 바보 이렇게 해줘야 끝나지
+			pthread_mutex_unlock(&(info->check_death));
+			break ;
+		}
 		pthread_mutex_unlock(&(info->check_full));
-		if (full_philos == info->num_philo)
+		if (check_death(&philo[i]))
+		{
+			pthread_mutex_lock(&(info->check_death));
+			info->isdied = 1;  // 바보 이렇게 해줘야 끝나지
+			pthread_mutex_unlock(&(info->check_death));
 			break ;
-		if (check_death(&(*philo)[i]))
-			break ;
+		}
 	}
+	return (0);
 }
 
 void	run_philo(t_info *info, t_philo *philo)
@@ -123,7 +139,9 @@ void	run_philo(t_info *info, t_philo *philo)
 		if (pthread_create(&philo[i].thread, NULL, act_philo, &philo[i]) != 0)
 			return ;
 	}
-	morintoring(info, &philo);
+	if (pthread_create(&info->monitor_thread, NULL, morintoring, philo) != 0)
+			return ;
+	pthread_join(info->monitor_thread, NULL);
 	i = -1;
 	while (++i < info->num_philo)
 		pthread_join(philo[i].thread, NULL);

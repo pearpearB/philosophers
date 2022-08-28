@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:24:17 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/26 17:18:54 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/28 19:54:50 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	free_thread(t_info *info, t_philo *philo)
 		pthread_mutex_destroy(&(info->fork[i]));
 	pthread_mutex_destroy(&(info->print));
 	pthread_mutex_destroy(&(info->check_death));
+	pthread_mutex_destroy(&(info->check_full));
+	pthread_mutex_destroy(&(info->check_last_eat));
 	free(info->fork);
 	free(philo);
 }
