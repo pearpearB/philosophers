@@ -6,37 +6,37 @@
 #    By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/24 15:25:57 by jabae             #+#    #+#              #
-#    Updated: 2022/08/29 20:20:24 by jabae            ###   ########.fr        #
+#    Updated: 2022/08/29 20:22:24 by jabae            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = philo
+NAME = philo_bonus
 
-SRCS =	philo.c \
-		init.c \
-		run.c \
-		utils.c \
+SRCS =	philo_bonus.c \
+		init_bonus.c \
+		run_bonus.c \
+		utils_bonus.c \
 
 OBJS = $(SRCS:%.c=%.o)
 
-FLAGS	= -Wall -Wextra -Werror
+FLAGS	= -Wall -Wextra -Werror #-fsanitize=thread -g3
 
 all	: $(NAME)
 
 $(NAME)	:	$(OBJS)
 		@cc $(FLAGS)  -o $(NAME) $(OBJS)
-		@echo "🍽 MAKE SUCCESS"
+		@echo "🍽 MAKE bonus SUCCESS"
 
 %.o	:	%.c
 	@cc $(FLAGS) -c $^ -I./
 
 clean	: 
 		@rm -f $(OBJS)
-		@echo "🍽 CLEAN SUCCESS"
+		@echo "🍽 CLEAN bonus SUCCESS"
 
 fclean	: 	clean
 		@rm -f $(NAME)
-		@echo "🍽 FCLEAN SUCCESS"
+		@echo "🍽 FCLEAN bonus SUCCESS"
 
 re : fclean all
 
