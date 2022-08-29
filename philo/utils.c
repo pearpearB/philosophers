@@ -6,15 +6,15 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:24:17 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/29 14:00:29 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/29 17:37:58 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	check_die_flag(t_info *info)
+int	check_death(t_info *info)
 {
-	int	isdied;
+	int		isdied;
 
 	pthread_mutex_lock(&(info->check_death));
 	isdied = info->die_flag;
@@ -28,7 +28,7 @@ void	print_philo(t_info *info, int id, int status)
 
 	pthread_mutex_lock(&(info->print));
 	now_time = init_time() - info->time_start;
-	if (!check_die_flag(info))
+	if (!check_death(info))
 	{
 		if (status == FORK)
 			printf("%lld %d has taken a fork\n", now_time, id);
@@ -49,6 +49,28 @@ void	print_philo(t_info *info, int id, int status)
 	pthread_mutex_unlock(&(info->print));
 }
 
+int	check_end(t_info *info, t_philo *philo, int i)
+{
+	pthread_mutex_lock(&(info->check_full));
+	if (info->num_full_philo == info->num_philo)
+	{
+		pthread_mutex_lock(&(info->check_death));
+		info->die_flag = 1;
+		pthread_mutex_unlock(&(info->check_death));
+		return (1);
+	}
+	pthread_mutex_unlock(&(info->check_full));
+	pthread_mutex_lock(&(info->check_last_eat));
+	if ((long long)info->time_die < init_time() - philo[i].time_last_eat)
+	{
+		print_philo(info, philo[i].id, DIE);
+		pthread_mutex_unlock(&(info->check_last_eat));
+		return (1);
+	}
+	pthread_mutex_unlock(&(info->check_last_eat));
+	return (0);
+}
+
 void	wait_time(long long time, t_philo *philo)
 {
 	long long	start_time;
@@ -61,11 +83,6 @@ void	wait_time(long long time, t_philo *philo)
 			break ;
 		usleep(250);
 	}
-}
-
-static int	ft_isdigit(const char s)
-{
-	return ('0' <= s && s <= '9');
 }
 
 int	ft_atoi(const char *s)
@@ -85,7 +102,7 @@ int	ft_atoi(const char *s)
 	}
 	while (*s)
 	{
-		if (!ft_isdigit(*s))
+		if (!('0' <= *s && *s <= '9'))
 			return (-1);
 		result = result * 10 + (*s - '0');
 		if ((sign > 0 && result * sign > INT_MAX) || \
