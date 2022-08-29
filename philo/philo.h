@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:13:31 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/28 23:16:34 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/29 11:01:18 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,8 @@ typedef struct s_info
 	int				die_flag;
 	int				num_full_philo;
 	long long		time_start;
-	pthread_t		monitor_thread;
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	check_death;
-	pthread_mutex_t check_full;
 	pthread_mutex_t check_last_eat;
 	pthread_mutex_t	print;
 }	t_info;

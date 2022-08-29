@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 14:00:31 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/28 21:08:51 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/29 11:00:50 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ int	init_info(t_info *info)
 	if (!info->fork)
 		return (printf("[Error] Insufficient Memory\n"));
 	if ((pthread_mutex_init(&info->check_death, NULL)) != 0)
-		return (-1);
-	if ((pthread_mutex_init(&info->check_full, NULL)) != 0)
 		return (-1);
 	if ((pthread_mutex_init(&info->check_last_eat, NULL)) != 0)
 		return (-1);
