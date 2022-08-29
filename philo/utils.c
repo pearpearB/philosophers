@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:24:17 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/28 23:16:24 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/29 11:21:01 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,12 @@ void	wait_time(long long time, t_philo *philo)
 	long long	start_time;
 
 	start_time = init_time();
-	while ((init_time() - start_time < time) && !check_death(philo)) // 중간중간 죽었는지 체크추가하기
+	while ((init_time() - start_time < time)) // 중간중간 죽었는지 체크추가하기
+	{
+		if ((long long)philo->info->time_die < init_time() - philo->time_last_eat)
+			break;
 		usleep(200);
+	}
 }
 
 static int	ft_isdigit(const char s)
