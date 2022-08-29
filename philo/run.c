@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 14:11:53 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/29 13:50:57 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/29 16:41:25 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,12 @@ static int	eat_philo(t_info *info, t_philo *philo)
 {
 	pthread_mutex_lock(&philo->info->fork[philo->fork_right]);
 	print_philo(info, philo->id, FORK);
+	// if (info->time_die < (init_time() - philo->time_last_eat) + info->time_eat)
+	// {
+	// 	pthread_mutex_unlock(&philo->info->fork[philo->fork_right]);
+	// 	wait_time((info->time_die - (init_time() - philo->time_last_eat)), philo);
+	// 	check_death(philo);
+	// } // 시도하려 했으나 실패함
 	pthread_mutex_lock(&philo->info->fork[philo->fork_left]);
 	print_philo(info, philo->id, FORK);
 	if (check_death(philo))

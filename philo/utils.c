@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:24:17 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/29 13:51:14 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/29 14:00:29 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	print_philo(t_info *info, int id, int status)
 	if (!check_die_flag(info))
 	{
 		if (status == FORK)
-			printf("%lld %d has taken a right fork\n", now_time, id);
+			printf("%lld %d has taken a fork\n", now_time, id);
 		else if (status == EAT)
 			printf("%lld %d is eating\n", now_time, id);
 		else if (status == SLEEP)

@@ -1,0 +1,33 @@
+0 1 has taken a fork
+0 5 has taken a fork
+0 1 has taken a fork
+0 1 is eating
+0 3 has taken a fork
+0 3 has taken a fork
+0 3 is eating
+200 3 is sleeping
+200 1 is sleeping
+200 4 has taken a fork
+200 5 has taken a fork
+200 5 is eating
+200 2 has taken a fork
+200 2 has taken a fork
+200 2 is eating
+400 5 is sleeping
+400 3 is thinking
+400 4 has taken a fork
+400 4 is eating
+400 1 is thinking
+400 2 is sleeping
+400 3 has taken a fork
+400 1 has taken a fork
+400 1 has taken a fork
+400 1 is eating
+
+410 3 died // ㅇㅣ렇게 나와야 함! 뮤텍스에 걸림
+
+600 4 is sleeping
+600 5 is thinking
+600 1 is sleeping
+600 3 has taken a fork
+600 3 died
