@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:13:31 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/29 11:39:37 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/29 13:49:19 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ typedef struct s_info
 	long long		time_start;
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	check_death;
-	// pthread_mutex_t check_last_eat;
 	pthread_mutex_t	print;
 }	t_info;
 
@@ -61,12 +60,13 @@ int				init_philo(t_info *info, t_philo **philo);
 long long		init_time(void);
 
 /* run */
-int	check_death(t_philo *philo);
+int				check_death(t_philo *philo);
 void			run_philo(t_info *info, t_philo *philo);
 
 /* utils */
-void			print_philo(t_info *info, long long time, int id, int status);
-void	wait_time(long long time, t_philo *philo);
+int				check_die_flag(t_info *info);
+void			print_philo(t_info *info, int id, int status);
+void			wait_time(long long time, t_philo *philo);
 int				ft_atoi(const char *s);
 
 #endif
