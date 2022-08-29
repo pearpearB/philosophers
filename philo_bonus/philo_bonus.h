@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:13:31 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/29 21:38:04 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/29 23:03:01 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,13 @@ typedef struct s_info
 	int				time_eat;
 	int				time_sleep;
 	int				num_must_eat;
-	int				num_full_philo;
+	int				die_flag;
+	int				num_full_philo; // -
 	long long		time_start;
 	sem_t			*fork;
 	sem_t			*eat_sem;
 	// sem_t			*eat_count_sem;
-	sem_t			*check_sem;
+	sem_t			*check_sem; // 뭐하는애지
 	sem_t			*print_sem;
 }	t_info;
 
@@ -60,14 +61,14 @@ typedef struct s_philo
 /* init */
 int				init_info(t_info *info);
 int				init_philo(t_info *info, t_philo **philo);
-int				init_process(t_info *info, t_philo **philo)
+int				init_process(t_info *info, t_philo **philo);
 long long		init_time(void);
 
 /* run */
-void			run_philo(t_info *info, t_philo *philo);
+void			*run_philo(t_info *info, t_philo *philo);
 
 /* utils */
-int				check_death(t_info *info);
+void			kill_pids(t_info *info, int id);
 void			print_philo(t_info *info, int id, int status);
 int				check_end(t_info *info, t_philo *philo, int i);
 void			wait_time(long long time, t_philo *philo);

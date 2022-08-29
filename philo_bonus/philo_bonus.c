@@ -6,25 +6,49 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:13:03 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/29 21:37:33 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/29 22:58:52 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
-static void	free_thread(t_info *info, t_philo *philo)
+static void	free_process(t_info *info, t_philo *philo)
+{
+	sem_close(info->check_sem);
+	sem_close(info->print_sem);
+	sem_close(info->eat_sem);
+	sem_unlink("fork_sem");
+	sem_unlink("eat_sem");
+	sem_unlink("print_sem");
+	sem_unlink("check_sem");
+	free(philo);
+	free(info->pid);
+}
+
+void	wait_process(t_info *info, t_philo *philo)
 {
 	int	i;
+	int	status;
 
 	i = -1;
 	while (++i < info->num_philo)
-		pthread_mutex_destroy(&(info->fork[i]));
-	pthread_mutex_destroy(&(info->print));
-	pthread_mutex_destroy(&(info->check_death));
-	pthread_mutex_destroy(&(info->check_full));
-	pthread_mutex_destroy(&(info->check_last_eat));
-	free(info->fork);
-	free(philo);
+	{
+		waitpid(-1, &status, 0);
+		if (status == 0)
+		{
+			sem_post(info->check_sem);
+			sem_post(info->print_sem);
+		}
+		else
+		{
+			if (info->die_flag == 0)
+				print_philo(info, philo->id, DIE);
+			info->die_flag = 1;
+			kill_pids(info, info->num_philo);
+			sem_post(info->print_sem);
+			break ;
+		}
+	}
 }
 
 static int	get_info(char **argv, t_info *info)
@@ -73,6 +97,7 @@ int	main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 	run_philo(&info, philo);
-	free_thread(&info, philo);
+	wait_process(&info, philo);
+	free_process(&info, philo);
 	return (0);
 }

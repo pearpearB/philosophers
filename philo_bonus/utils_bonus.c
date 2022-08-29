@@ -1,74 +1,62 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:24:17 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/29 17:37:58 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/29 22:56:02 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
-int	check_death(t_info *info)
+// int	check_death(t_info *info)
+// {
+// 	int		isdied;
+
+// 	pthread_mutex_lock(&(info->check_death));
+// 	isdied = info->die_flag;
+// 	pthread_mutex_unlock(&(info->check_death));
+// 	return (isdied);
+// }
+
+void	kill_pids(t_info *info, int id)
 {
-	int		isdied;
+	int	i;
 
-	pthread_mutex_lock(&(info->check_death));
-	isdied = info->die_flag;
-	pthread_mutex_unlock(&(info->check_death));
-	return (isdied);
+	i = -1;
+	while (++i < id)
+		kill(info->pid[i], SIGKILL);
+	sem_post(info->check_sem); // 이거 왜 해줌???
 }
 
 void	print_philo(t_info *info, int id, int status)
 {
 	long long	now_time;
 
-	pthread_mutex_lock(&(info->print));
 	now_time = init_time() - info->time_start;
-	if (!check_death(info))
+	sem_wait(info->print_sem);
+	sem_wait(info->check_sem);
+	if (info->die_flag)
 	{
-		if (status == FORK)
-			printf("%lld %d has taken a fork\n", now_time, id);
-		else if (status == EAT)
-			printf("%lld %d is eating\n", now_time, id);
-		else if (status == SLEEP)
-			printf("%lld %d is sleeping\n", now_time, id);
-		else if (status == THINK)
-			printf("%lld %d is thinking\n", now_time, id);
-		else if (status == DIE)
-		{
-			printf("%lld %d died\n", now_time, id);
-			pthread_mutex_lock(&(info->check_death));
-			info->die_flag = 1;
-			pthread_mutex_unlock(&(info->check_death));
-		}
+		sem_post(info->check_sem);
+		sem_post(info->print_sem);
+		exit(1);
 	}
-	pthread_mutex_unlock(&(info->print));
-}
-
-int	check_end(t_info *info, t_philo *philo, int i)
-{
-	pthread_mutex_lock(&(info->check_full));
-	if (info->num_full_philo == info->num_philo)
-	{
-		pthread_mutex_lock(&(info->check_death));
-		info->die_flag = 1;
-		pthread_mutex_unlock(&(info->check_death));
-		return (1);
-	}
-	pthread_mutex_unlock(&(info->check_full));
-	pthread_mutex_lock(&(info->check_last_eat));
-	if ((long long)info->time_die < init_time() - philo[i].time_last_eat)
-	{
-		print_philo(info, philo[i].id, DIE);
-		pthread_mutex_unlock(&(info->check_last_eat));
-		return (1);
-	}
-	pthread_mutex_unlock(&(info->check_last_eat));
-	return (0);
+	if (status == FORK)
+		printf("%lld %d has taken a fork\n", now_time, id);
+	else if (status == EAT)
+		printf("%lld %d is eating\n", now_time, id);
+	else if (status == SLEEP)
+		printf("%lld %d is sleeping\n", now_time, id);
+	else if (status == THINK)
+		printf("%lld %d is thinking\n", now_time, id);
+	else if (status == DIE)
+		printf("%lld %d died\n", now_time, id);
+	sem_post(info->check_sem);
+	sem_post(info->print_sem);
 }
 
 void	wait_time(long long time, t_philo *philo)

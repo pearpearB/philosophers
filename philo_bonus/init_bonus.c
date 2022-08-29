@@ -6,11 +6,11 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 14:00:31 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/29 22:04:58 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/29 23:00:37 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 long long	init_time(void)
 {
@@ -26,7 +26,7 @@ int	init_info(t_info *info)
 	info->die_flag = 0;
 	info->num_full_philo = 0;
 	info->time_start = init_time(); // 임시
-	info->fork = sem_open("fork_sem", O_CREAT, 0644, info->philo_num);
+	info->fork = sem_open("fork_sem", O_CREAT, 0644, info->num_philo);
 	if (info->fork == SEM_FAILED)
 		return (-1);
 	info->eat_sem = sem_open("eat_sem", O_CREAT, 0644, 1);
@@ -35,8 +35,8 @@ int	init_info(t_info *info)
 	info->check_sem = sem_open("check_sem", O_CREAT, 0644, 1);
 	if (info->check_sem == SEM_FAILED)
 		return (-1);
-	info->print = sem_open("print_sem", O_CREAT, 0644, 1);
-	if (info->print == SEM_FAILED)
+	info->print_sem = sem_open("print_sem", O_CREAT, 0644, 1);
+	if (info->print_sem == SEM_FAILED)
 		return (-1);
 	return (0);
 }
@@ -63,16 +63,6 @@ int	init_philo(t_info *info, t_philo **philo)
 	return (0);
 }
 
-static void	kill_pids(t_info *info, int id)
-{
-	int	i;
-
-	i = -1;
-	while (++i < id)
-		kill(info->pid[i], SIGKILL);
-	sem_post(info->check_sem); // 이거 왜 해줌???
-}
-
 int	init_process(t_info *info, t_philo **philo)
 {
 	int	i;
@@ -90,7 +80,7 @@ int	init_process(t_info *info, t_philo **philo)
 			return (-1);
 		}
 		if (info->pid[i] == 0)
-			run_philo(info, &philo[i]);
+			run_philo(info, philo[i]);
 	}
 	return (0);
 }
