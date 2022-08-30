@@ -6,21 +6,11 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:24:17 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/30 12:01:18 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/30 14:21:36 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
-
-// int	check_death(t_info *info)
-// {
-// 	int		isdied;
-
-// 	pthread_mutex_lock(&(info->check_death));
-// 	isdied = info->die_flag;
-// 	pthread_mutex_unlock(&(info->check_death));
-// 	return (isdied);
-// }
 
 void	kill_pids(t_info *info, int id)
 {
@@ -29,7 +19,7 @@ void	kill_pids(t_info *info, int id)
 	i = -1;
 	while (++i < id)
 		kill(info->pid[i], SIGKILL);
-	sem_post(info->check_sem);
+	sem_post(info->check_death);
 }
 
 void	print_philo(t_info *info, int id, int status)
@@ -37,12 +27,12 @@ void	print_philo(t_info *info, int id, int status)
 	long long	now_time;
 
 	now_time = init_time() - info->time_start;
-	sem_wait(info->print_sem);
-	sem_wait(info->check_sem);
+	sem_wait(info->print);
+	sem_wait(info->check_death);
 	if (info->die_flag)
 	{
-		sem_post(info->check_sem);
-		sem_post(info->print_sem);
+		sem_post(info->check_death);
+		sem_post(info->print);
 		exit(1);
 	}
 	if (status == FORK)
@@ -55,8 +45,8 @@ void	print_philo(t_info *info, int id, int status)
 		printf("%lld %d is thinking\n", now_time, id);
 	else if (status == DIE)
 		printf("%lld %d died\n", now_time, id);
-	sem_post(info->check_sem);
-	sem_post(info->print_sem);
+	sem_post(info->check_death);
+	sem_post(info->print);
 }
 
 void	wait_time(long long time)

@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 14:00:31 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/30 11:47:34 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/30 14:27:32 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,23 +24,22 @@ long long	init_time(void)
 int	init_info(t_info *info)
 {
 	info->die_flag = 0;
-	// info->num_full_philo = 0;
-	sem_unlink("fork_sem");
-	sem_unlink("eat_sem");
-	sem_unlink("check_sem");
-	sem_unlink("print_sem");
+	sem_unlink("fork");
+	sem_unlink("check_last_eat");
+	sem_unlink("check_death");
+	sem_unlink("print");
 	info->time_start = init_time(); // 임시
-	info->fork = sem_open("fork_sem", O_CREAT, 0644, info->num_philo);
+	info->fork = sem_open("fork", O_CREAT, 0644, info->num_philo);
 	if (info->fork == SEM_FAILED)
 		return (-1);
-	info->eat_sem = sem_open("eat_sem", O_CREAT, 0644, 1);
-	if (info->eat_sem == SEM_FAILED)
+	info->check_last_eat = sem_open("check_last_eat", O_CREAT, 0644, 1);
+	if (info->check_last_eat == SEM_FAILED)
 		return (-1);
-	info->check_sem = sem_open("check_sem", O_CREAT, 0644, 1);
-	if (info->check_sem == SEM_FAILED)
+	info->check_death = sem_open("check_death", O_CREAT, 0644, 1);
+	if (info->check_death == SEM_FAILED)
 		return (-1);
-	info->print_sem = sem_open("print_sem", O_CREAT, 0644, 1);
-	if (info->print_sem == SEM_FAILED)
+	info->print = sem_open("print", O_CREAT, 0644, 1);
+	if (info->print == SEM_FAILED)
 		return (-1);
 	return (0);
 }
@@ -56,11 +55,6 @@ int	init_philo(t_info *info, t_philo **philo)
 	while (++i < info->num_philo)
 	{
 		(*philo)[i].id = i + 1;
-		// if (i == 0)
-		// 	(*philo)[i].fork_right = info->num_philo - 1;
-		// else
-		// 	(*philo)[i].fork_right = i - 1;
-		// (*philo)[i].fork_left = i;
 		(*philo)[i].num_eat = 0;
 		(*philo)[i].info = info;
 	}

@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:13:31 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/30 11:59:23 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/30 14:21:46 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,20 +39,16 @@ typedef struct s_info
 	int				time_sleep;
 	int				num_must_eat;
 	int				die_flag;
-	// int				num_full_philo; // -
 	long long	time_start;
 	sem_t			*fork;
-	sem_t			*eat_sem;
-	// sem_t			*eat_count_sem;
-	sem_t			*check_sem; // 뭐하는애지
-	sem_t			*print_sem;
+	sem_t			*print;
+	sem_t			*check_last_eat;
+	sem_t			*check_death;
 }	t_info;
 
 typedef struct s_philo
 {
 	int				id;
-	// int				fork_right; // 왜 포크 인덱스가 없지??
-	// int				fork_left;
 	int				num_eat;
 	long long	time_last_eat;
 	pthread_t	thread;
