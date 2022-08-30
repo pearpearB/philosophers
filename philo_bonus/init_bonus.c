@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 14:00:31 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/29 23:00:37 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/30 10:23:18 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ long long	init_time(void)
 int	init_info(t_info *info)
 {
 	info->die_flag = 0;
-	info->num_full_philo = 0;
+	// info->num_full_philo = 0;
 	info->time_start = init_time(); // 임시
 	info->fork = sem_open("fork_sem", O_CREAT, 0644, info->num_philo);
 	if (info->fork == SEM_FAILED)
@@ -59,6 +59,9 @@ int	init_philo(t_info *info, t_philo **philo)
 		// (*philo)[i].fork_left = i;
 		(*philo)[i].num_eat = 0;
 		(*philo)[i].info = info;
+		write(1, "id: ", 4);
+		write(1, &philo[i]->id, 1);
+		write(1, "\n", 1);
 	}
 	return (0);
 }
