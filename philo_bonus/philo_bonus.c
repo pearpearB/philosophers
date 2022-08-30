@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:13:03 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/29 22:58:52 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/30 12:29:15 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	free_process(t_info *info, t_philo *philo)
 	free(info->pid);
 }
 
-void	wait_process(t_info *info, t_philo *philo)
+void	wait_process(t_info *info, t_philo *philo) // 스레드 join 같은 역할
 {
 	int	i;
 	int	status;
@@ -33,20 +33,22 @@ void	wait_process(t_info *info, t_philo *philo)
 	i = -1;
 	while (++i < info->num_philo)
 	{
-		waitpid(-1, &status, 0);
+		waitpid(-1, &status, 0); // pid 해당하는 값을 기다림 -1은 임의의 자식 프로세스 아무거나 기다림 // ststus는 exit 종료 코드를 받아옴
 		if (status == 0)
 		{
-			sem_post(info->check_sem);
+			sem_post(info->eat_sem);
 			sem_post(info->print_sem);
 		}
 		else
 		{
+			sem_post(info->eat_sem);
+			sem_post(info->print_sem);
 			if (info->die_flag == 0)
 				print_philo(info, philo->id, DIE);
 			info->die_flag = 1;
-			kill_pids(info, info->num_philo);
+			kill_pids(info, info->num_philo); // 한명이라도 죽으면 모든 자식 프로세스를 죽임
 			sem_post(info->print_sem);
-			break ;
+			break ; //브레이크로 나와서 나머지 프리해줌
 		}
 	}
 }
@@ -91,12 +93,11 @@ int	main(int argc, char *argv[])
 		printf("[Error] Philo init failed\n");
 		exit(EXIT_FAILURE);
 	}
-	if (init_process(&info, &philo))
+	if (init_process(&info, philo))
 	{
 		printf("[Error] Philo process failed\n");
 		exit(EXIT_FAILURE);
 	}
-	run_philo(&info, philo);
 	wait_process(&info, philo);
 	free_process(&info, philo);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:24:17 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/29 22:56:02 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/30 12:01:18 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	kill_pids(t_info *info, int id)
 	i = -1;
 	while (++i < id)
 		kill(info->pid[i], SIGKILL);
-	sem_post(info->check_sem); // 이거 왜 해줌???
+	sem_post(info->check_sem);
 }
 
 void	print_philo(t_info *info, int id, int status)
@@ -59,18 +59,13 @@ void	print_philo(t_info *info, int id, int status)
 	sem_post(info->print_sem);
 }
 
-void	wait_time(long long time, t_philo *philo)
+void	wait_time(long long time)
 {
 	long long	start_time;
 
 	start_time = init_time();
 	while ((init_time() - start_time < time))
-	{
-		if ((long long)philo->info->time_die < \
-			init_time() - philo->time_last_eat)
-			break ;
 		usleep(250);
-	}
 }
 
 int	ft_atoi(const char *s)

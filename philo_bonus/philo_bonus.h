@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:13:31 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/30 10:02:28 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/30 11:59:23 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ typedef struct s_philo
 /* init */
 int				init_info(t_info *info);
 int				init_philo(t_info *info, t_philo **philo);
-int				init_process(t_info *info, t_philo **philo);
+int				init_process(t_info *info, t_philo *philo);
 long long	init_time(void);
 
 /* run */
@@ -72,7 +72,7 @@ void			*run_philo(t_info *info, t_philo *philo);
 void			kill_pids(t_info *info, int id);
 void			print_philo(t_info *info, int id, int status);
 int				check_end(t_info *info, t_philo *philo, int i);
-void			wait_time(long long time, t_philo *philo);
+void			wait_time(long long time);
 int				ft_atoi(const char *s);
 
 #endif
