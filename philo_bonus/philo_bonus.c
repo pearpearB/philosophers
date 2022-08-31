@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:13:03 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/30 14:27:09 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/31 11:45:04 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,25 +79,13 @@ int	main(int argc, char *argv[])
 	t_philo	*philo;
 
 	if (!(argc == 5 || argc == 6) || get_info(argv, &info))
-	{
-		printf("[Error] Invalid Arguments\n");
-		exit(EXIT_FAILURE);
-	}
+		ft_error("Invalid Arguments");
 	if (init_info(&info))
-	{
-		printf("[Error] Semaphore open failed\n");
-		exit(EXIT_FAILURE);
-	}
+		ft_error("Semaphore open failed");
 	if (init_philo(&info, &philo))
-	{
-		printf("[Error] Philo init failed\n");
-		exit(EXIT_FAILURE);
-	}
+		ft_error("Philo init failed");
 	if (init_process(&info, philo))
-	{
-		printf("[Error] Philo process failed\n");
-		exit(EXIT_FAILURE);
-	}
+		ft_error("Philo process failed");
 	wait_process(&info, philo);
 	free_process(&info, philo);
 	return (0);

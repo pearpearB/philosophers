@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:13:31 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/30 14:21:46 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/31 11:45:19 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ long long	init_time(void);
 void			*run_philo(t_info *info, t_philo *philo);
 
 /* utils */
+void			ft_error(char *message);
 void			kill_pids(t_info *info, int id);
 void			print_philo(t_info *info, int id, int status);
 int				check_end(t_info *info, t_philo *philo, int i);

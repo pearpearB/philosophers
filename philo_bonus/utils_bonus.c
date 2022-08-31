@@ -6,11 +6,17 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:24:17 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/30 14:21:36 by jabae            ###   ########.fr       */
+/*   Updated: 2022/08/31 11:45:05 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
+
+void	ft_error(char *message)
+{
+	printf("[Error] %s\n", message);
+	exit(EXIT_FAILURE);
+}
 
 void	kill_pids(t_info *info, int id)
 {
