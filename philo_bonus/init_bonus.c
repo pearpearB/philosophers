@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 14:00:31 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/30 14:27:32 by jabae            ###   ########.fr       */
+/*   Updated: 2022/09/04 18:12:43 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	init_info(t_info *info)
 	sem_unlink("check_last_eat");
 	sem_unlink("check_death");
 	sem_unlink("print");
-	info->time_start = init_time(); // 임시
+	info->time_start = init_time();
 	info->fork = sem_open("fork", O_CREAT, 0644, info->num_philo);
 	if (info->fork == SEM_FAILED)
 		return (-1);

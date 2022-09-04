@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:13:31 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/31 11:45:19 by jabae            ###   ########.fr       */
+/*   Updated: 2022/09/04 18:09:16 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ typedef struct s_info
 	int				time_sleep;
 	int				num_must_eat;
 	int				die_flag;
-	long long	time_start;
+	long long		time_start;
 	sem_t			*fork;
 	sem_t			*print;
 	sem_t			*check_last_eat;
@@ -50,16 +50,16 @@ typedef struct s_philo
 {
 	int				id;
 	int				num_eat;
-	long long	time_last_eat;
-	pthread_t	thread;
-	t_info		*info;
+	long long		time_last_eat;
+	pthread_t		thread;
+	t_info			*info;
 }	t_philo;
 
 /* init */
 int				init_info(t_info *info);
 int				init_philo(t_info *info, t_philo **philo);
 int				init_process(t_info *info, t_philo *philo);
-long long	init_time(void);
+long long		init_time(void);
 
 /* run */
 void			*run_philo(t_info *info, t_philo *philo);
