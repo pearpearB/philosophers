@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:13:03 by jabae             #+#    #+#             */
-/*   Updated: 2022/09/04 18:08:10 by jabae            ###   ########.fr       */
+/*   Updated: 2022/09/04 22:13:18 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	free_process(t_info *info, t_philo *philo)
 	free(info->pid);
 }
 
-void	wait_process(t_info *info, t_philo *philo)
+void	wait_process(t_info *info)
 {
 	int	i;
 	int	status;
@@ -41,15 +41,14 @@ void	wait_process(t_info *info, t_philo *philo)
 		}
 		else
 		{
-			sem_post(info->check_last_eat);
-			sem_post(info->print);
-			if (info->die_flag == 0)
-				print_philo(info, philo->id, DIE);
-			info->die_flag = 1;
 			kill_pids(info, info->num_philo);
 			sem_post(info->print);
+			sem_post(info->check_last_eat);
 			break ;
 		}
+		// usleep(10); 
+		// ./philo_bonus 200 500 200 200 1 종료 안되는 문제 해결하기 & 
+		// check_death 이름바꾸기 monitor랑 print에서 동시에 접근하니까 그거 막는 거
 	}
 }
 
@@ -86,7 +85,7 @@ int	main(int argc, char *argv[])
 		ft_error("Philo init failed");
 	if (init_process(&info, philo))
 		ft_error("Philo process failed");
-	wait_process(&info, philo);
+	wait_process(&info);
 	free_process(&info, philo);
 	return (0);
 }

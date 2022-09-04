@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:13:31 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/30 11:57:43 by jabae            ###   ########.fr       */
+/*   Updated: 2022/09/04 21:07:27 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void			run_philo(t_info *info, t_philo *philo);
 int				check_death(t_info *info);
 void			print_philo(t_info *info, int id, int status);
 int				check_end(t_info *info, t_philo *philo, int i);
-void			wait_time(long long time);
+void			wait_time(long long time, t_philo *philo);
 int				ft_atoi(const char *s);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 14:11:53 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/30 14:38:28 by jabae            ###   ########.fr       */
+/*   Updated: 2022/09/04 22:04:29 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,17 @@ static void	*monitoring(void	*ph)
 	info = philo->info;
 	while (1)
 	{
+		sem_wait(info->check_death);
 		sem_wait(info->check_last_eat);
 		if ((long long)info->time_die < init_time() - philo->time_last_eat)
 		{
 			sem_post(info->check_last_eat);
+			sem_post(info->check_death);
+			print_philo(info, philo->id, DIE);
 			exit(1);
 		}
 		sem_post(info->check_last_eat);
+		sem_post(info->check_death);
 		usleep(100);
 	}
 	return (0);
@@ -65,7 +69,6 @@ void	*run_philo(t_info *info, t_philo *philo)
 		print_philo(info, philo->id, SLEEP);
 		wait_time(info->time_sleep);
 		print_philo(info, philo->id, THINK);
-		usleep(250);
 	}
 	exit (0);
 }

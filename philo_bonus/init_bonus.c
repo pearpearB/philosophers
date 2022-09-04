@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 14:00:31 by jabae             #+#    #+#             */
-/*   Updated: 2022/09/04 18:12:43 by jabae            ###   ########.fr       */
+/*   Updated: 2022/09/04 21:54:50 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ long long	init_time(void)
 
 int	init_info(t_info *info)
 {
-	info->die_flag = 0;
 	sem_unlink("fork");
 	sem_unlink("check_last_eat");
 	sem_unlink("check_death");

@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 14:11:53 by jabae             #+#    #+#             */
-/*   Updated: 2022/08/30 14:41:14 by jabae            ###   ########.fr       */
+/*   Updated: 2022/09/04 21:08:00 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	eat_philo(t_info *info, t_philo *philo)
 		info->num_full_philo += 1;
 		pthread_mutex_unlock(&(info->check_full));
 	}
-	wait_time(info->time_eat);
+	wait_time(info->time_eat, philo);
 	pthread_mutex_unlock(&philo->info->fork[philo->fork_right]);
 	pthread_mutex_unlock(&philo->info->fork[philo->fork_left]);
 	return (0);
@@ -44,7 +44,7 @@ static int	eat_philo(t_info *info, t_philo *philo)
 static void	*one_philo(t_info *info, t_philo *philo)
 {
 	print_philo(info, philo->id, FORK);
-	wait_time(info->time_die);
+	wait_time(info->time_die, philo);
 	print_philo(info, philo->id, DIE);
 	return (0);
 }
@@ -68,7 +68,7 @@ static void	*act_philo(void *ph)
 			philo->num_eat == philo->info->num_must_eat)
 			break ;
 		print_philo(philo->info, philo->id, SLEEP);
-		wait_time(philo->info->time_sleep);
+		wait_time(philo->info->time_sleep, philo);
 		if (check_death(philo->info))
 			break ;
 		print_philo(philo->info, philo->id, THINK);
