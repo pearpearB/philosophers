@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:13:03 by jabae             #+#    #+#             */
-/*   Updated: 2022/09/05 15:50:35 by jabae            ###   ########.fr       */
+/*   Updated: 2022/09/05 16:31:47 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,12 @@
 
 static void	free_process(t_info *info, t_philo *philo)
 {
-	int	i;
-
-	i = -1;
-	while (++i < info->num_philo)
-		pthread_mutex_destroy(&(philo[i].check_last_eat));
+	sem_close(info->fork);
 	sem_close(info->print);
+	sem_close(info->check_last_eat);
 	sem_unlink("fork");
 	sem_unlink("print");
+	sem_unlink("check_last_eat");
 	free(philo);
 	free(info->pid);
 }
@@ -38,8 +36,9 @@ void	wait_process(t_info *info)
 		if (status != 0)
 		{
 			kill_pids(info, info->num_philo);
-			usleep(2000); // SIGINT로 종료하기 때문에 회수할 시간이 필요함
+			usleep(2000);
 			sem_post(info->print);
+			sem_post(info->check_last_eat);
 			break ;
 		}
 	}

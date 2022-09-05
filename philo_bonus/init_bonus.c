@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 14:00:31 by jabae             #+#    #+#             */
-/*   Updated: 2022/09/05 15:50:57 by jabae            ###   ########.fr       */
+/*   Updated: 2022/09/05 16:24:00 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,16 @@ int	init_info(t_info *info)
 {
 	sem_unlink("fork");
 	sem_unlink("print");
+	sem_unlink("check_last_eat");
 	info->time_start = init_time();
 	info->fork = sem_open("fork", O_CREAT, 0644, info->num_philo);
 	if (info->fork == SEM_FAILED)
 		return (-1);
 	info->print = sem_open("print", O_CREAT, 0644, 1);
 	if (info->print == SEM_FAILED)
+		return (-1);
+	info->check_last_eat = sem_open("check_last_eat", O_CREAT, 0644, 1);
+	if (info->check_last_eat == SEM_FAILED)
 		return (-1);
 	return (0);
 }
@@ -49,8 +53,6 @@ int	init_philo(t_info *info, t_philo **philo)
 		(*philo)[i].num_eat = 0;
 		(*philo)[i].info = info;
 		(*philo)[i].time_last_eat = init_time();
-		if ((pthread_mutex_init(&(*philo)[i].check_last_eat, NULL)) != 0)
-			return (-1);
 	}
 	return (0);
 }
