@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 14:11:53 by jabae             #+#    #+#             */
-/*   Updated: 2022/09/05 15:49:05 by jabae            ###   ########.fr       */
+/*   Updated: 2022/09/05 16:14:17 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	*monitoring(void	*ph)
 		{
 			pthread_mutex_unlock(&(philo->check_last_eat));
 			print_philo(info, philo->id, DIE);
-			exit(1);
+			exit(EXIT_FAILURE);
 		}
 		pthread_mutex_unlock(&(philo->check_last_eat));
 		usleep(100);
@@ -53,7 +53,7 @@ static void	*monitoring(void	*ph)
 void	*run_philo(t_info *info, t_philo *philo)
 {
 	if (pthread_create(&philo->thread, NULL, &monitoring, philo) != 0)
-		exit(1);
+		exit (EXIT_FAILURE);
 	if (!(philo->id % 2))
 		usleep(100);
 	pthread_detach(philo->thread);
@@ -66,5 +66,5 @@ void	*run_philo(t_info *info, t_philo *philo)
 		wait_time(info->time_sleep);
 		print_philo(info, philo->id, THINK);
 	}
-	exit (0);
+	exit (EXIT_SUCCESS);
 }
