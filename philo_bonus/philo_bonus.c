@@ -41,6 +41,8 @@ void	wait_process(t_info *info)
 			sem_post(info->check_last_eat);
 			break ;
 		}
+		sem_post(info->print);
+		sem_post(info->check_last_eat);
 	}
 }
 
