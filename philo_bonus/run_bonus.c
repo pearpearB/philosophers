@@ -54,9 +54,9 @@ void	*run_philo(t_info *info, t_philo *philo)
 {
 	if (pthread_create(&philo->thread, NULL, &monitoring, philo) != 0)
 		exit (EXIT_FAILURE);
-	if (!(philo->id % 2))
-		usleep(100);
 	pthread_detach(philo->thread);
+	if (!(philo->id % 2))
+		wait_time(info->time_eat * 0.5);
 	while (1)
 	{
 		eat_philo(info, philo);
