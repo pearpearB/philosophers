@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:24:17 by jabae             #+#    #+#             */
-/*   Updated: 2022/09/04 22:01:33 by jabae            ###   ########.fr       */
+/*   Updated: 2022/09/05 15:49:39 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	kill_pids(t_info *info, int id)
 	i = -1;
 	while (++i < id)
 		kill(info->pid[i], SIGINT);
-	sem_post(info->check_death);
 }
 
 void	print_philo(t_info *info, int id, int status)
@@ -34,7 +33,6 @@ void	print_philo(t_info *info, int id, int status)
 
 	now_time = init_time() - info->time_start;
 	sem_wait(info->print);
-	sem_wait(info->check_death);
 	if (status == FORK)
 		printf("%lld %d has taken a fork\n", now_time, id);
 	else if (status == EAT)
@@ -46,10 +44,8 @@ void	print_philo(t_info *info, int id, int status)
 	else if (status == DIE)
 	{
 		printf("%lld %d died\n", now_time, id);
-		sem_post(info->check_death);
 		return ;
 	}
-	sem_post(info->check_death);
 	sem_post(info->print);
 }
 

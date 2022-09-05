@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:13:31 by jabae             #+#    #+#             */
-/*   Updated: 2022/09/04 21:53:21 by jabae            ###   ########.fr       */
+/*   Updated: 2022/09/05 15:49:52 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@ typedef struct s_info
 	long long		time_start;
 	sem_t			*fork;
 	sem_t			*print;
-	sem_t			*check_last_eat;
-	sem_t			*check_death;
 }	t_info;
 
 typedef struct s_philo
@@ -51,6 +49,7 @@ typedef struct s_philo
 	int				num_eat;
 	long long		time_last_eat;
 	pthread_t		thread;
+	pthread_mutex_t	check_last_eat;
 	t_info			*info;
 }	t_philo;
 

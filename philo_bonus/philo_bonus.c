@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 13:13:03 by jabae             #+#    #+#             */
-/*   Updated: 2022/09/04 22:13:18 by jabae            ###   ########.fr       */
+/*   Updated: 2022/09/05 15:50:35 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,13 @@
 
 static void	free_process(t_info *info, t_philo *philo)
 {
-	sem_close(info->check_death);
-	sem_close(info->check_last_eat);
+	int	i;
+
+	i = -1;
+	while (++i < info->num_philo)
+		pthread_mutex_destroy(&(philo[i].check_last_eat));
 	sem_close(info->print);
 	sem_unlink("fork");
-	sem_unlink("check_last_eat");
-	sem_unlink("check_death");
 	sem_unlink("print");
 	free(philo);
 	free(info->pid);
@@ -34,21 +35,13 @@ void	wait_process(t_info *info)
 	while (++i < info->num_philo)
 	{
 		waitpid(-1, &status, 0);
-		if (status == 0)
-		{
-			sem_post(info->check_last_eat);
-			sem_post(info->print);
-		}
-		else
+		if (status != 0)
 		{
 			kill_pids(info, info->num_philo);
+			usleep(2000); // SIGINT로 종료하기 때문에 회수할 시간이 필요함
 			sem_post(info->print);
-			sem_post(info->check_last_eat);
 			break ;
 		}
-		// usleep(10); 
-		// ./philo_bonus 200 500 200 200 1 종료 안되는 문제 해결하기 & 
-		// check_death 이름바꾸기 monitor랑 print에서 동시에 접근하니까 그거 막는 거
 	}
 }
 
