@@ -6,7 +6,7 @@
 /*   By: jabae <jabae@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/15 14:11:53 by jabae             #+#    #+#             */
-/*   Updated: 2022/09/05 16:32:09 by jabae            ###   ########.fr       */
+/*   Updated: 2022/09/05 20:40:54 by jabae            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void	*monitoring(void	*ph)
 			exit(EXIT_FAILURE);
 		}
 		sem_post(info->check_last_eat);
-		usleep(100);
+		usleep(200);
 	}
 	return (0);
 }
