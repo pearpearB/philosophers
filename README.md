@@ -32,4 +32,5 @@
 
 다 먹었는데 간헐적으로 종료가 안됨
 
+정상종료된 친구들도 부모 프로세스 wait_process()에서 sem_post(print), sem_post(check_last_eat)해주기
 
