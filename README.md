@@ -1,5 +1,9 @@
 # philosophers
 
+#### [error] philo 
+
+
+
 
 #### [error] philo_bonus 99 410 200 200 
 
